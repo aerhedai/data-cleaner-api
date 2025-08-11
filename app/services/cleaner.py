@@ -22,9 +22,27 @@ def clean_dataset(dataset_id: str) -> Optional[CleanResponse]:
     for col in df.columns:
         n_missing = df[col].isna().sum()
         if n_missing > 0:
-            df[col].fillna(df[col].median() if df[col].dtype!=object else df[col].mode()[0], inplace=True)
+            # Check if column is empty or all NaNs to avoid errors on median/mode
+            if df[col].dropna().empty:
+                logger.warning(f"Column '{col}' is empty or all NaNs, skipping fillna")
+                continue
+
+            if df[col].dtype != object:
+                median_val = df[col].median()
+                # Fill missing with median safely without inplace chaining
+                df[col] = df[col].fillna(median_val)
+            else:
+                mode_series = df[col].mode()
+                if mode_series.empty:
+                    logger.warning(f"Column '{col}' has no mode, skipping fillna")
+                    continue
+                mode_val = mode_series[0]
+                # Fill missing with mode safely without inplace chaining
+                df[col] = df[col].fillna(mode_val)
+
             filled[col] = int(n_missing)
 
+    # Clean column names
     df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
 
     cleaned_id = uuid.uuid4().hex
