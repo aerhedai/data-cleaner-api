@@ -2,39 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),  
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [1.0.0] - 2025-08-11
+### Added
+- Initial release of **Data Cleaner API**.
+- Implemented endpoint for cleaning datasets by:
+  - Removing duplicate rows.
+  - Handling missing values.
+  - Standardising column names.
+  - Correcting data types.
+- Added support for multiple input formats:
+  - CSV
+  - Excel
+  - Parquet
+  - JSON
+- Included flexible configuration options for cleaning parameters via API request body.
+- Implemented robust error handling for invalid inputs and unsupported formats.
+- Added Dockerfile for containerised deployment.
+- Configured automated linting and formatting with **Black** and **Flake8**.
+- Created initial project structure using the [Aerhed AI Python API Template](https://github.com/aerhedai/python-api-template).
+- Added basic unit tests for core cleaning functions.
+- Created example request and response payloads in API documentation.
 
----
+### Documentation
+- Added `README.md` with:
+  - Installation instructions.
+  - Usage examples.
+  - API endpoint details.
+  - Project structure.
+- Added `CHANGELOG.md` for tracking future changes.
+- Included `.env.example` file for environment configuration.
+- Documented local development setup.
 
-## [1.0.0] - 2025-07-23
-
-### 🎉 Initial Release
-
-#### Added
-- ✅ Dockerfile for building and running the API in a containerised environment.
-- ✅ `main.py` for FastAPI app instantiation and route registration.
-- ✅ Modular folder structure:
-  - `api/` – Contains route definitions.
-  - `services/` – Business logic layer (example included).
-  - `models/` – Pydantic schemas for request/response models.
-  - `core/` – Pydantic config for setup.
-  - `utils/` – Logger utility included.
-  - `tests/` – Sample unit test structure.
-- ✅ `logging.py` for basic application logging using the standard library.
-- ✅ Example endpoint: `/example`.
-- ✅ Swagger/OpenAPI support via FastAPI (`/docs` and `/redoc`).
-- ✅ Requirements file for dependency management.
-- ✅ Readme with full instructions and project overview.
-
-## [1.0.1] - 2025-07-23
-
-### Fixed
-- 🐛 Added missing `httpx` dependency required for testing with `TestClient`.
-- ✅ Ensured all test routes run successfully using `pytest`.
-
-
----
-
-> Future versions will include enhancements like database support, authentication, advanced logging, environment-based configuration, and more.
-
+### DevOps
+- Added `.dockerignore` and `.gitignore` for cleaner repository management.
+- Configured `requirements.txt` with all necessary dependencies.
+- Included `Makefile` for common development commands.
+- Set up GitHub repository for version tracking and collaboration.

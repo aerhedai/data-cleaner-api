@@ -1,10 +1,9 @@
 from fastapi import FastAPI
-from app.api import routes
-from .utils.logging import setup_logger
+from app.api.routes import router
 
-logger = setup_logger(__name__)
-logger.info("App is starting...")
-app = FastAPI(title="Python API Boilerplate")
+app = FastAPI(title="Data Cleaner API", version="0.1.0")
+app.include_router(router)
 
-# Register routes
-app.include_router(routes.router)
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
