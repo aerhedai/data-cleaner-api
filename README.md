@@ -1,149 +1,153 @@
-# Python API Boilerplate
+# Data Cleaner API
 
-A ready-to-use, Dockerized FastAPI boilerplate for building scalable and maintainable Python APIs quickly. This boilerplate provides a modular folder structure, logging, routing, and example code to get you started with building your own APIs efficiently.
+The **Data Cleaner API** is a modular microservice that automates cleaning of tabular datasets.  
+It removes duplicates, handles missing values, corrects data types, and standardises column names — preparing datasets for downstream analysis or modelling.  
+
+This API is part of the **Aerhed AI Universal Dataset Agent** project, designed for composable, reusable dataset processing.
 
 ---
 
 ## Features
 
-- ⚡ FastAPI framework with automatic docs (`/docs` and `/redoc`)
-- 🧱 Modular code organisation (routes, services, models, utils)
-- 🐳 Docker support for consistent local development and deployment
-- 📜 Logging included for easier debugging and monitoring
-- 🚀 Easily extendable for real projects
+- 🚀 **REST API** for cleaning datasets  
+- 📂 Supports **CSV**, **Excel**, **Parquet**, and **JSON**  
+- 🧹 Removes duplicates & trims whitespace  
+- 🛠 Handles missing values (drop or impute with defaults)  
+- 🧾 Normalises column names to snake_case  
+- ⚡ Fast & lightweight with **FastAPI**  
+- 🧪 Built-in testing & CI/CD ready
 
 ---
 
-## Directory Structure
+## Installation
 
+### 1. Clone the repository
+```bash
+git clone https://github.com/aerhedai/data-cleaner-api.git
+cd data-cleaner-api
 ```
-.
-├── app/
-│   ├── api/
-│   │   └── routes.py           # API route definitions
-│   ├── services/
-│   │   └── example.py          # Business logic/services
-│   ├── models/
-│   │   └── example_schema.py   # Pydantic models for validation
-│   ├── core/
-│   │   └── config.py           # Pydantic config for setup
-│   ├── utils/
-│   │   └── logging.py          # Logger setup
-│   ├── main.py                 # FastAPI app setup and route inclusion
-├── tests/
-│   └── test_example.py         # Example unit tests
-├── Dockerfile                  # Docker configuration
-├── requirements.txt            # Python dependencies
-├── README.md                   # Project readme
-├── .gitignore                  # Ignore rules
-├── LICENSE                     # Distribution and Usage License
-├── .env.example                # Environmental variable examples
-├── CHANGELOG.md                # API boilerplate changelog
+
+### 2. Create and activate a virtual environment
+```bash
+python3 -m venv venv
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate      # Windows
+```
+
+### 3. Install dependencies
+```bash
+pip install -r requirements.txt
 ```
 
 ---
 
-## Getting Started
+## Usage
 
-### 🔧 Prerequisites
-
-- Docker installed on your machine
-- (Optional) Python 3.9+ if not using Docker
-
-### 🚀 Running with Docker
-
-1. Build the image:
-   ```bash
-   docker build -t api-boilerplate .
-   ```
-
-2. Run the container:
-   ```bash
-   docker run -p 8000:8080 api-boilerplate
-   ```
-
-3. Access your API:
-   - API base: http://localhost:8000
-   - Swagger UI: http://localhost:8000/docs
-   - ReDoc: http://localhost:8000/redoc
-
----
-
-### 🧪 Running Locally (without Docker)
-
-1. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate        # macOS/Linux
-   venv\Scripts\activate           # Windows
-   ```
-
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Run the app:
-   ```bash
-   uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-   ```
-
----
-
-## 🛠️ Extending the Boilerplate
-
-- **Add Routes:**  
-  Define new endpoints in `app/api/` and register them via the router.
-
-- **Add Services:**  
-  Place logic in `app/services/` and call from your routes.
-
-- **Define Models:**  
-  Use Pydantic in `app/models/` for request/response validation.
-
-- **Utilities:**  
-  Add helpers/loggers in `app/utils/`.
-
-- **Tests:**  
-  Write unit and integration tests in `tests/`.
-
-- **Environment Configs (optional):**  
-  Use `python-dotenv` or other tools for managing environment variables.
-
----
-
-## ✅ Notes
-
-- Docker exposes port 8080 (internal) as 8000 (host).
-- Modify the Dockerfile or FastAPI config if you want different ports.
-- Structure is suitable for scaling: you can add auth, DB, caching, etc.
-
----
-
-## 🧪 Example Endpoint
-
-Try:
-```
-GET http://localhost:8000/example
+### Run the API locally
+```bash
+uvicorn app.main:app --reload
 ```
 
-Response:
+Once running, visit:  
+➡ **Swagger Docs**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)  
+➡ **ReDoc**: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)  
+
+---
+
+## Example API Call
+
+### Request
+```bash
+curl -X POST "http://127.0.0.1:8000/clean" \
+-H "Content-Type: multipart/form-data" \
+-F "file=@sample.csv"
+```
+
+### Response
 ```json
 {
-  "message": "Hello from the example service!"
+  "message": "Dataset cleaned successfully",
+  "rows_before": 100,
+  "rows_after": 95,
+  "columns": ["name", "age", "city"],
+  "download_url": "/downloads/cleaned_dataset.csv"
 }
 ```
 
 ---
 
-## 🧾 License
-
-MIT License. Feel free to use and modify.
+## File Structure
+```
+data-cleaner-api/
+├── app/
+│   ├── __init__.py
+│   ├── main.py           # FastAPI entry point
+│   ├── routes.py         # API endpoints
+│   ├── services.py       # Cleaning logic
+│   ├── utils.py          # Helper functions
+│   └── config.py         # Settings & constants
+├── tests/
+│   ├── __init__.py
+│   ├── test_routes.py    # Endpoint tests
+│   └── test_services.py  # Cleaning logic tests
+├── requirements.txt      # Dependencies
+├── README.md             # Documentation
+├── .gitignore
+└── LICENSE
+```
 
 ---
 
-## 🙌 Contributing
+## Development Workflow
 
-Pull requests welcome! Open an issue for feature requests or bugs.
+1. **Branching**  
+   - `main` → stable production code  
+   - `dev` → active development  
+   - feature branches for new features: `feature/data-cleaning-options`
+
+2. **Commits**  
+   - Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
+     - `feat:` – new feature
+     - `fix:` – bug fix
+     - `docs:` – documentation only changes
+     - `refactor:` – code change without functional impact
+     - `test:` – adding or updating tests
+
+3. **Pull Requests**  
+   - Always open a PR from feature branch → `dev`
+   - Use PR templates for clarity
+
+4. **Testing**  
+   - Run `pytest` locally before pushing
+   - Ensure 80%+ test coverage
 
 ---
+
+## Docker Deployment
+
+### Build the image
+```bash
+docker build -t data-cleaner-api .
+```
+
+### Run the container
+```bash
+docker run -d -p 8000:8000 data-cleaner-api
+```
+
+---
+
+## Contributing
+
+We welcome contributions!  
+Please follow these steps:
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes and write tests
+4. Submit a pull request
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
