@@ -23,6 +23,13 @@ All notable changes to this project will be documented in this file.
 - Added basic unit tests for core cleaning functions.
 - Created example request and response payloads in API documentation.
 
+## [1.0.1] - 2025-08-11
+### Fixed
+- Resolved pandas chained assignment warning related to inplace operations when filling missing values.
+- Improved data cleaning function to avoid splicing issues by modifying DataFrame columns safely.
+- Enhanced stability and correctness of missing value imputation logic.
+
+
 ### Documentation
 - Added `README.md` with:
   - Installation instructions.
